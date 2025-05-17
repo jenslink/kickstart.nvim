@@ -353,6 +353,21 @@ require('lazy').setup({
   -- you do for a plugin at the top level, you can do for a dependency.
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
+  { 'https://github.com/nvim-telekasten/calendar-vim' },
+  {
+    'renerocksai/telekasten.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim' },
+  },
+  { 'https://github.com/Weyaaron/nvim-training', pin = true, opts = {} },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -1028,6 +1043,40 @@ require('lazy').setup({
     },
   },
 })
+
+require('lspconfig').harper_ls.setup {
+  settings = {
+    ['harper-ls'] = {
+      userDictPath = '',
+      fileDictPath = '',
+      linters = {
+        SpellCheck = true,
+        SpelledNumbers = false,
+        AnA = true,
+        SentenceCapitalization = true,
+        UnclosedQuotes = true,
+        WrongQuotes = false,
+        LongSentences = true,
+        RepeatedWords = true,
+        Spaces = true,
+        Matcher = true,
+        CorrectNumberSuffix = true,
+      },
+      codeActions = {
+        ForceStable = false,
+      },
+      markdown = {
+        IgnoreLinkTitle = false,
+      },
+      diagnosticSeverity = 'hint',
+      isolateEnglish = false,
+    },
+  },
+}
+
+require('telekasten').setup {
+  home = vim.fn.expand '~/zettelkasten', -- Put the name of your notes directory here
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
